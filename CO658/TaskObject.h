@@ -10,6 +10,7 @@ public:
 	string task;
 	TaskObject(int priority, string task) :priority(priority), task(task) {}
 	~TaskObject() {}
+	// Overload the "<" operator to sort the priority for the queue
 	bool operator< (const TaskObject& rhd) {
 		return this->priority < rhd.priority;
 	}

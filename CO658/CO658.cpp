@@ -6,6 +6,10 @@
 
 using namespace std;
 
+#define END "END"
+#define EXIT "EXIT"
+#define MENU "MENU"
+
 int main() {
 	cout << "\n--------------------------------------------------------------------" << endl;
 	cout << "\n                             To-Do List" << endl;
@@ -15,15 +19,15 @@ int main() {
 	cout << "\n       Type 'END' to stop inputting and to view your list!" << endl;
 	cout << "\n--------------------------------------------------------------------\n" << endl;
 
+	// Boolean values used to break the while loops for user input
 	bool userAddingTasks = true;
 	bool userRunningApplication = true;
 	bool userIsInMenu = true;
-	const string END = "END";
-	const string EXIT = "EXIT";
-	const string MENU = "MENU";
 
-	ToDoQueue *toDoList = new ToDoQueue(20); // Make this a vector
+	// Initalise the priority queue
+	ToDoQueue *toDoList = new ToDoQueue();
 
+	// Loop through until userAddingTasks is set to false
 	while (userAddingTasks) {
 		string userTaskInput;
 		int userPriorityInput;
@@ -31,38 +35,46 @@ int main() {
 		cout << "Enter the task: ";
 		getline(cin, userTaskInput);
 
+		// If user inputs "END" exit the while loop
 		if (userTaskInput == END) {
 			userAddingTasks = false;
 			break;
 		}
 
+		// Get the users input for the task priority, only if they enter 1, 2 or 3
 		do {
 			cout << "Enter the Priority (1 = Low, 2 = Medium, 3 = High): ";
 			cin >> userPriorityInput;
 			cout << endl;
 			cin.ignore();
 			cin.clear();
-		} while (userPriorityInput < 0 || userPriorityInput > 3);
+		} while (userPriorityInput < 1 || userPriorityInput > 3);
 
+		// Insert the inputs into the priority queue
 		toDoList->Insert(new TaskObject(userPriorityInput, userTaskInput));
 	}
 
 	cout << "\n--------------------------------------------------------------------" << endl;
 	cout << "\nYour Prioritised To-Do List:\n" << endl;
 
-	// Create the hash table with the size being a prime number for double hashing
-	ToDoHashTable *table = new ToDoHashTable(17);
+	// Initalise the hash table
+	ToDoHashTable *table = new ToDoHashTable();
 
+	// Loop through all the items in the priority queue
 	while (!toDoList->isEmpty()) {
-		TaskObject *obj = toDoList->Remove();
-		cout << "Priority: " << obj->priority << "\t Task: " << obj->task << endl;
+		// Remove the top item in the priority queue and output it's details
+		TaskObject *item = toDoList->Remove();
+		cout << "Priority: " << item->priority << "\t Task: " << item->task << endl;
 		
-		table->Insert(obj);
+		// Insert the item into the hash table
+		table->Insert(item);
 	}
 
+	// Display the hash table with all the todo items
 	cout << "\nYour To-Do List Table:" << endl;
 	table->Display();
 
+	// Loop through until userRunningApplication is set to false
 	while (userRunningApplication) {
 		string userChoiceInput;
 
@@ -80,6 +92,7 @@ int main() {
 		cin.ignore();
 		cin.clear();
 
+		// If user inputs "EXIT" exit the while loop and close the application
 		if (userChoiceInput == EXIT) {
 			userRunningApplication = false;
 			break;
@@ -87,7 +100,9 @@ int main() {
 
 		userIsInMenu = true;
 		
+		// Loop through until userIsInMenu is set to false
 		while (userIsInMenu) {
+			// If the user enters "1" to Search
 			if (userChoiceInput == "1") {
 				string userSearchInput;
 				TaskObject *objToFind;
@@ -100,20 +115,25 @@ int main() {
 				cout << "Search by task name: ";
 				getline(cin, userSearchInput);
 
+				// If user inputs "MENU" exit the while loop and return into the menu loop
 				if (userSearchInput == MENU) {
 					userIsInMenu = false;
 					break;
 				}
 
+				// Search the hash table for the users inputted task name
 				objToFind = table->Search(userSearchInput);
 				if (objToFind && objToFind->task == userSearchInput) {
+					// If the task name they entered was found, display a message
 					cout << "\nFound Task '" << userSearchInput << "'!" << endl;
 					cout << "Priority: " << objToFind->priority << endl;
-				}
-				else {
+				} else {
+					// If the task name they entered could not be found, display a message
 					cout << "\nTask '" << userSearchInput << "' could not be found." << endl;
 				}
-			} else if (userChoiceInput == "2") {
+			} 
+			// If the user enters "2" to Complete a task
+			else if (userChoiceInput == "2") {
 				string userTaskNameInput;
 				TaskObject *objToComplete;
 
@@ -125,19 +145,22 @@ int main() {
 				cout << "Enter the name of the task you wish to mark as complete: " << endl;
 				getline(cin, userTaskNameInput);
 
+				// If user inputs "MENU" exit the while loop and return into the menu loop
 				if (userTaskNameInput == MENU) {
 					userIsInMenu = false;
 					break;
 				}
 
+				// Search the hash table for the users inputted task name and remove it
 				objToComplete = table->CompleteTask(userTaskNameInput);
 				if (objToComplete && objToComplete->task == userTaskNameInput) {
+					// If the task name they entered was found, display a message and output the new todo hash table
 					cout << "\nTask '" << userTaskNameInput << "' has been completed and removed from your list!" << endl;
 					cout << "\n--------------------------------------------------------------------" << endl;
 					cout << "\nYour New To-Do List Table:\n" << endl;
 					table->Display();
-				}
-				else {
+				} else {
+					// If the task name they entered could not be found, display a message
 					cout << "\nTask '" << userTaskNameInput << "' could not be found." << endl;
 				}
 			}
