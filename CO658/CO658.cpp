@@ -24,7 +24,7 @@ int main() {
 	bool userRunningApplication = true;
 	bool userIsInMenu = true;
 
-	// Initalise the priority queue
+	// Initialise the priority queue
 	ToDoQueue *toDoList = new ToDoQueue();
 
 	// Loop through until userAddingTasks is set to false
@@ -57,7 +57,7 @@ int main() {
 	cout << "\n--------------------------------------------------------------------" << endl;
 	cout << "\nYour Prioritised To-Do List:\n" << endl;
 
-	// Initalise the hash table
+	// Initialise the hash table
 	ToDoHashTable *table = new ToDoHashTable();
 
 	// Loop through all the items in the priority queue
