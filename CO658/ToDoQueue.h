@@ -1,20 +1,21 @@
 #pragma once
 
+#include "TaskObject.h"
+
 using namespace std;
 
-template <class T>
 class ToDoQueue {
 private:
 	int count;
-	T **data;
+	TaskObject **data;
 	int size;
 public:
 	ToDoQueue(int size) :size(size) {
-		data = new T*[size];
+		data = new TaskObject*[size];
 		count = 0;
 	}
 	~ToDoQueue() {}
-	void Insert(T* taskObject) {
+	void Insert(TaskObject* taskObject) {
 		if (isEmpty() == true) {
 			data[count++] = taskObject;
 		}
@@ -32,7 +33,7 @@ public:
 			count++;
 		}
 	}
-	T* Remove() {
+	TaskObject* Remove() {
 		count--;
 		return data[count];
 	}

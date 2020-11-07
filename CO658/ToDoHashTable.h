@@ -2,13 +2,13 @@
 
 #include <iostream>
 #include <string>
+#include "TaskObject.h"
 
 using namespace std;
 
-template <class T>
 class ToDoHashTable {
 private:
-	T** data;
+	TaskObject** data;
 	int size;
 	int HashFunction(string key) {
 		int ASCIItot = 0;
@@ -19,7 +19,7 @@ private:
 	}
 public:
 	ToDoHashTable(int size) :size(size) {
-		data = new T*[size];
+		data = new TaskObject*[size];
 		for (int i = 0; i < size; i++)
 			data[i] = NULL;
 	}
@@ -31,7 +31,7 @@ public:
 			}
 		}
 	}
-	void Insert(T* item) {
+	void Insert(TaskObject* item) {
 		string key = item->task;
 		int hash = HashFunction(key);
 		while (data[hash] != NULL) {
@@ -40,7 +40,7 @@ public:
 		}
 		data[hash] = item;
 	}
-	T* Search(string key) {
+	TaskObject* Search(string key) {
 		int hash = HashFunction(key);
 		while (data[hash] != NULL) {
 			if (data[hash]->task == key) {
@@ -51,11 +51,11 @@ public:
 		}
 		return NULL;
 	}
-	T* CompleteTask(string key) {
+	TaskObject* CompleteTask(string key) {
 		int hash = HashFunction(key);
 		while (data[hash] != NULL) {
 			if (data[hash]->task == key) {
-				T *taskToDelete = data[hash];
+				TaskObject *taskToDelete = data[hash];
 				data[hash] = NULL;
 				return taskToDelete;
 			}

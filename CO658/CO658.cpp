@@ -22,7 +22,7 @@ int main() {
 	const string EXIT = "EXIT";
 	const string MENU = "MENU";
 
-	ToDoQueue<TaskObject> *toDoList = new ToDoQueue<TaskObject>(20); // Make this a vector
+	ToDoQueue *toDoList = new ToDoQueue(20); // Make this a vector
 
 	while (userAddingTasks) {
 		string userTaskInput;
@@ -51,7 +51,7 @@ int main() {
 	cout << "\nYour Prioritised To-Do List:\n" << endl;
 
 	// Create the hash table with the size being a prime number for double hashing
-	ToDoHashTable<TaskObject> *table = new ToDoHashTable<TaskObject>(17);
+	ToDoHashTable *table = new ToDoHashTable(17);
 
 	while (!toDoList->isEmpty()) {
 		TaskObject *obj = toDoList->Remove();
@@ -60,7 +60,7 @@ int main() {
 		table->Insert(obj);
 	}
 
-	cout << "\nYour To-Do List Table:\n" << endl;
+	cout << "\nYour To-Do List Table:" << endl;
 	table->Display();
 
 	while (userRunningApplication) {
